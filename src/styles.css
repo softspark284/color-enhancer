@@ -317,40 +317,65 @@
   --radius: 1rem;
 
   --background: oklch(0.16 0.02 285);
+  --color-background: oklch(0.16 0.02 285);
   --foreground: oklch(0.97 0.01 280);
+  --color-foreground: oklch(0.97 0.01 280);
 
   --surface: oklch(0.21 0.02 285);
+  --color-surface: oklch(0.21 0.02 285);
   --surface-foreground: oklch(0.97 0.01 280);
+  --color-surface-foreground: oklch(0.97 0.01 280);
 
   --card: oklch(0.20 0.02 285);
+  --color-card: oklch(0.20 0.02 285);
   --card-foreground: oklch(0.97 0.01 280);
+  --color-card-foreground: oklch(0.97 0.01 280);
 
   --popover: oklch(0.22 0.02 285);
+  --color-popover: oklch(0.22 0.02 285);
   --popover-foreground: oklch(0.97 0.01 280);
+  --color-popover-foreground: oklch(0.97 0.01 280);
 
   --primary: oklch(0.62 0.24 295);
+  --color-primary: oklch(0.62 0.24 295);
   --primary-foreground: oklch(0.99 0.005 285);
+  --color-primary-foreground: oklch(0.99 0.005 285);
   --primary-glow: oklch(0.72 0.22 305);
+  --color-primary-glow: oklch(0.72 0.22 305);
 
   --secondary: oklch(0.28 0.03 285);
+  --color-secondary: oklch(0.28 0.03 285);
   --secondary-foreground: oklch(0.97 0.01 280);
+  --color-secondary-foreground: oklch(0.97 0.01 280);
 
   --muted: oklch(0.26 0.02 285);
+  --color-muted: oklch(0.26 0.02 285);
   --muted-foreground: oklch(0.72 0.03 280);
+  --color-muted-foreground: oklch(0.72 0.03 280);
 
   --accent: oklch(0.32 0.05 295);
+  --color-accent: oklch(0.32 0.05 295);
   --accent-foreground: oklch(0.98 0.01 280);
+  --color-accent-foreground: oklch(0.98 0.01 280);
 
   --accent-pink: oklch(0.78 0.16 350);
+  --color-accent-pink: oklch(0.78 0.16 350);
   --accent-amber: oklch(0.85 0.17 85);
+  --color-accent-amber: oklch(0.85 0.17 85);
   --accent-emerald: oklch(0.74 0.16 165);
+  --color-accent-emerald: oklch(0.74 0.16 165);
 
   --destructive: oklch(0.65 0.22 25);
+  --color-destructive: oklch(0.65 0.22 25);
   --destructive-foreground: oklch(0.99 0.005 280);
+  --color-destructive-foreground: oklch(0.99 0.005 280);
 
   --border: oklch(1 0 0 / 8%);
+  --color-border: oklch(1 0 0 / 8%);
   --input: oklch(1 0 0 / 10%);
+  --color-input: oklch(1 0 0 / 10%);
   --ring: oklch(0.62 0.24 295 / 60%);
+  --color-ring: oklch(0.62 0.24 295 / 60%);
 
   color: var(--color-foreground);
   background-color: var(--color-background);
