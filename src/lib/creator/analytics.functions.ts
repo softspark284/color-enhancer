@@ -1,4 +1,4 @@
-// Client-safe server-function entry point for Creator Manager analytics.
+// Client-safe server-function entry point for manager-console analytics.
 // Components import this module; the repository (.server.ts) is loaded only
 // inside the handler body and is stripped from the client bundle.
 
@@ -8,12 +8,15 @@ import { z } from "zod";
 
 import type { DashboardAnalytics, TimeRange } from "./types";
 
-export const getCreatorAnalytics = createServerFn({ method: "GET" })
+export type ModuleId = "creator" | "reseller" | "influencer" | "franchise";
+
+export const getModuleAnalytics = createServerFn({ method: "GET" })
   .inputValidator((data: unknown) =>
     z
       .object({
+        module: z.enum(["creator", "reseller", "influencer", "franchise"]).default("creator"),
         range: z.enum(["1d", "7d", "30d", "90d"]).default("7d"),
-        influencerId: z.string().min(1).optional(),
+        scopeId: z.string().min(1).optional(),
       })
       .parse(data ?? {}),
   )
@@ -22,9 +25,13 @@ export const getCreatorAnalytics = createServerFn({ method: "GET" })
     return fetchDashboardAnalytics(data);
   });
 
-export const creatorAnalyticsQueryOptions = (range: TimeRange = "7d") =>
+export const moduleAnalyticsQueryOptions = (module: ModuleId, range: TimeRange = "7d") =>
   queryOptions({
-    queryKey: ["creator-analytics", range] as const,
-    queryFn: () => getCreatorAnalytics({ data: { range } }),
+    queryKey: ["module-analytics", module, range] as const,
+    queryFn: () => getModuleAnalytics({ data: { module, range } }),
     staleTime: 60_000,
   });
+
+/** Back-compat alias for the Creator Manager console. */
+export const creatorAnalyticsQueryOptions = (range: TimeRange = "7d") =>
+  moduleAnalyticsQueryOptions("creator", range);
