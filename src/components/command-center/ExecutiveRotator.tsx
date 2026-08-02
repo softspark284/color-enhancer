@@ -535,10 +535,10 @@ const ConnectionWidget = memo(() => {
       };
       setInfo({
         online: navigator.onLine,
-        rtt: nav.connection?.rtt,
-        down: nav.connection?.downlink,
-        type: nav.connection?.effectiveType,
-        cores: nav.hardwareConcurrency,
+        ...(nav.connection?.rtt !== undefined ? { rtt: nav.connection.rtt } : {}),
+        ...(nav.connection?.downlink !== undefined ? { down: nav.connection.downlink } : {}),
+        ...(nav.connection?.effectiveType !== undefined ? { type: nav.connection.effectiveType } : {}),
+        ...(nav.hardwareConcurrency !== undefined ? { cores: nav.hardwareConcurrency } : {}),
       });
     };
     read();

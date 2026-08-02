@@ -63,7 +63,13 @@
   --color-neon: var(--neon);
   --color-neon-foreground: var(--neon-foreground);
   --color-gold: var(--gold);
+  --color-surface: var(--surface);
+  --color-surface-foreground: var(--surface-foreground);
+  --color-accent-pink: var(--accent-pink);
+  --color-accent-amber: var(--accent-amber);
+  --color-accent-emerald: var(--accent-emerald);
 }
+
 
 :root {
   --radius: 0.625rem;
