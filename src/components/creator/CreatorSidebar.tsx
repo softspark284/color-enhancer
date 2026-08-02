@@ -82,10 +82,11 @@ export function CreatorSidebar({
       >
         <Link to="/" className="flex min-w-0 items-center gap-2" onClick={onCloseMobile}>
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-primary to-primary-glow font-bold text-primary-foreground">
-            SV
+            {brandMark}
           </span>
           {!collapsed && (
-            <span className="truncate text-sm font-semibold tracking-tight">Software Vala</span>
+            <span className="truncate text-sm font-semibold tracking-tight">{brand}</span>
+
           )}
         </Link>
         {!collapsed && (
