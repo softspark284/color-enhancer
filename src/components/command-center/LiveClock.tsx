@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import { useLiveClock } from "./useLive";
 
 const ZONES = [
-  { k: "Local", tz: Intl.DateTimeFormat().resolvedOptions().timeZone },
+  { k: "Local", tz: "UTC" },
   { k: "UTC", tz: "UTC" },
   { k: "NY", tz: "America/New_York" },
   { k: "LDN", tz: "Europe/London" },
@@ -17,6 +17,7 @@ const ZONES = [
   { k: "TYO", tz: "Asia/Tokyo" },
   { k: "SGP", tz: "Asia/Singapore" },
 ];
+
 
 function partsIn(d: Date, tz: string) {
   const f = new Intl.DateTimeFormat("en-GB", {
@@ -44,8 +45,19 @@ function isoWeek(d: Date) {
 
 export const LiveClock = memo(() => {
   const now = useLiveClock(50);
-  const [tz, setTz] = useState(ZONES[0]!.tz);
+  const [tz, setTz] = useState("UTC");
   const [zoneKey, setZoneKey] = useState("Local");
+
+  // Resolve the visitor's real timezone only after hydration so SSR and the
+  // first client render produce identical markup.
+  React.useEffect(() => {
+    setTz((current) => {
+      if (zoneKey !== "Local") return current;
+      return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [zoneKey]);
+
 
   const p = useMemo(() => (now ? partsIn(now, tz) : null), [now, tz]);
   const ms = now ? String(now.getMilliseconds()).padStart(3, "0") : "---";

@@ -3,7 +3,12 @@ import { Link } from "@tanstack/react-router";
 import { ChevronDown, PanelLeftClose, PanelLeftOpen, Search, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { groups, primary, type NavItem } from "./navigation";
+import {
+  groups as defaultGroups,
+  primary as defaultPrimary,
+  type NavGroup,
+  type NavItem,
+} from "./navigation";
 
 interface CreatorSidebarProps {
   collapsed: boolean;
@@ -12,6 +17,11 @@ interface CreatorSidebarProps {
   onCloseMobile: () => void;
   active: string;
   onSelect: (label: string) => void;
+  /** Nav model — defaults to the Creator Manager model. */
+  primary?: NavItem[];
+  groups?: NavGroup[];
+  brand?: string;
+  brandMark?: string;
 }
 
 export function CreatorSidebar({
@@ -21,6 +31,10 @@ export function CreatorSidebar({
   onCloseMobile,
   active,
   onSelect,
+  primary = defaultPrimary,
+  groups = defaultGroups,
+  brand = "Software Vala",
+  brandMark = "SV",
 }: CreatorSidebarProps) {
   const [query, setQuery] = useState("");
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
@@ -31,7 +45,8 @@ export function CreatorSidebar({
     return groups
       .map((g) => ({ ...g, items: g.items.filter((i) => i.label.toLowerCase().includes(q)) }))
       .filter((g) => g.items.length > 0);
-  }, [query]);
+  }, [query, groups]);
+
 
   const groupOpen = (label: string, items: NavItem[]) =>
     openGroups[label] ?? items.some((i) => i.label === active);
@@ -67,10 +82,11 @@ export function CreatorSidebar({
       >
         <Link to="/" className="flex min-w-0 items-center gap-2" onClick={onCloseMobile}>
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-primary to-primary-glow font-bold text-primary-foreground">
-            SV
+            {brandMark}
           </span>
           {!collapsed && (
-            <span className="truncate text-sm font-semibold tracking-tight">Software Vala</span>
+            <span className="truncate text-sm font-semibold tracking-tight">{brand}</span>
+
           )}
         </Link>
         {!collapsed && (

@@ -1,14 +1,35 @@
-// Creator Manager analytics domain models (ported from Creator's Launchpad).
+// Shared analytics domain models used by every manager console
+// (Creator, Reseller, Influencer, Franchise).
 // Backend implementations MUST conform to these shapes.
 
 export type MetricKey =
+  // shared / creator + influencer
   | "followers"
   | "reach"
   | "views"
   | "clicks"
   | "leads"
   | "sales"
-  | "commissions";
+  | "commissions"
+  | "campaigns"
+  | "content"
+  | "influencers"
+  | "applications"
+  | "payouts"
+  // reseller
+  | "resellers"
+  | "orders"
+  | "revenue"
+  | "renewals"
+  | "tickets"
+  | "conversion"
+  // franchise
+  | "franchises"
+  | "countries"
+  | "regions"
+  | "licenses"
+  | "royalty"
+  | "onboarding";
 
 export type TimeRange = "1d" | "7d" | "30d" | "90d";
 
@@ -45,7 +66,26 @@ export const METRIC_KEYS: MetricKey[] = [
   "leads",
   "sales",
   "commissions",
+  "campaigns",
+  "content",
+  "influencers",
+  "applications",
+  "payouts",
+  "resellers",
+  "orders",
+  "revenue",
+  "renewals",
+  "tickets",
+  "conversion",
+  "franchises",
+  "countries",
+  "regions",
+  "licenses",
+  "royalty",
+  "onboarding",
 ];
+
+const CURRENCY_KEYS = new Set<MetricKey>(["commissions", "revenue", "royalty", "payouts"]);
 
 export function emptyMetric(key: MetricKey): MetricSnapshot {
   return {
@@ -54,7 +94,7 @@ export function emptyMetric(key: MetricKey): MetricSnapshot {
     previousValue: 0,
     deltaPct: null,
     series: [],
-    ...(key === "commissions" ? { unit: "USD" } : {}),
+    ...(CURRENCY_KEYS.has(key) ? { unit: "USD" } : {}),
   };
 }
 

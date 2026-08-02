@@ -185,6 +185,19 @@ function Index() {
                 void navigate({ to: "/creator-manager" });
                 return;
               }
+              if (roleId === "reseller_manager") {
+                void navigate({ to: "/reseller-manager" });
+                return;
+              }
+              if (roleId === "influencer_manager" || roleId === "influencer_dashboard") {
+                void navigate({ to: "/influencer-manager" });
+                return;
+              }
+              if (roleId === "franchise_manager") {
+                void navigate({ to: "/franchise-manager" });
+                return;
+              }
+
 
               toast.success(`Switched to ${roleId.replace(/_/g, " ")}`);
             }}

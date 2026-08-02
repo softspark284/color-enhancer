@@ -11,6 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CreatorManagerRouteImport } from './routes/creator-manager'
+import { Route as FranchiseManagerRouteImport } from './routes/franchise-manager'
+import { Route as InfluencerManagerRouteImport } from './routes/influencer-manager'
+import { Route as ResellerManagerRouteImport } from './routes/reseller-manager'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 
 const IndexRoute = IndexRouteImport.update({
@@ -23,6 +26,21 @@ const CreatorManagerRoute = CreatorManagerRouteImport.update({
   path: '/creator-manager',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FranchiseManagerRoute = FranchiseManagerRouteImport.update({
+  id: '/franchise-manager',
+  path: '/franchise-manager',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InfluencerManagerRoute = InfluencerManagerRouteImport.update({
+  id: '/influencer-manager',
+  path: '/influencer-manager',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResellerManagerRoute = ResellerManagerRouteImport.update({
+  id: '/reseller-manager',
+  path: '/reseller-manager',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiChatRoute = ApiChatRouteImport.update({
   id: '/api/chat',
   path: '/api/chat',
@@ -32,30 +50,61 @@ const ApiChatRoute = ApiChatRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/creator-manager': typeof CreatorManagerRoute
+  '/franchise-manager': typeof FranchiseManagerRoute
+  '/influencer-manager': typeof InfluencerManagerRoute
+  '/reseller-manager': typeof ResellerManagerRoute
   '/api/chat': typeof ApiChatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/creator-manager': typeof CreatorManagerRoute
+  '/franchise-manager': typeof FranchiseManagerRoute
+  '/influencer-manager': typeof InfluencerManagerRoute
+  '/reseller-manager': typeof ResellerManagerRoute
   '/api/chat': typeof ApiChatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/creator-manager': typeof CreatorManagerRoute
+  '/franchise-manager': typeof FranchiseManagerRoute
+  '/influencer-manager': typeof InfluencerManagerRoute
+  '/reseller-manager': typeof ResellerManagerRoute
   '/api/chat': typeof ApiChatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/creator-manager' | '/api/chat'
+  fullPaths:
+    | '/'
+    | '/creator-manager'
+    | '/franchise-manager'
+    | '/influencer-manager'
+    | '/reseller-manager'
+    | '/api/chat'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/creator-manager' | '/api/chat'
-  id: '__root__' | '/' | '/creator-manager' | '/api/chat'
+  to:
+    | '/'
+    | '/creator-manager'
+    | '/franchise-manager'
+    | '/influencer-manager'
+    | '/reseller-manager'
+    | '/api/chat'
+  id:
+    | '__root__'
+    | '/'
+    | '/creator-manager'
+    | '/franchise-manager'
+    | '/influencer-manager'
+    | '/reseller-manager'
+    | '/api/chat'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CreatorManagerRoute: typeof CreatorManagerRoute
+  FranchiseManagerRoute: typeof FranchiseManagerRoute
+  InfluencerManagerRoute: typeof InfluencerManagerRoute
+  ResellerManagerRoute: typeof ResellerManagerRoute
   ApiChatRoute: typeof ApiChatRoute
 }
 
@@ -75,6 +124,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreatorManagerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/franchise-manager': {
+      id: '/franchise-manager'
+      path: '/franchise-manager'
+      fullPath: '/franchise-manager'
+      preLoaderRoute: typeof FranchiseManagerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/influencer-manager': {
+      id: '/influencer-manager'
+      path: '/influencer-manager'
+      fullPath: '/influencer-manager'
+      preLoaderRoute: typeof InfluencerManagerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reseller-manager': {
+      id: '/reseller-manager'
+      path: '/reseller-manager'
+      fullPath: '/reseller-manager'
+      preLoaderRoute: typeof ResellerManagerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/chat': {
       id: '/api/chat'
       path: '/api/chat'
@@ -88,6 +158,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CreatorManagerRoute: CreatorManagerRoute,
+  FranchiseManagerRoute: FranchiseManagerRoute,
+  InfluencerManagerRoute: InfluencerManagerRoute,
+  ResellerManagerRoute: ResellerManagerRoute,
   ApiChatRoute: ApiChatRoute,
 }
 export const routeTree = rootRouteImport
