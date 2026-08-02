@@ -1,13 +1,14 @@
-// Server-only repository for Creator Manager analytics. Talks to the configured
-// Software Vala backend over HTTP. When env is not configured it returns a
-// well-formed empty snapshot so the UI renders a true zero-state — never
-// fake or demo data.
+// Server-only repository for manager-console analytics (Creator, Reseller,
+// Influencer, Franchise). Talks to the configured Software Vala backend over
+// HTTP. When env is not configured it returns a well-formed empty snapshot so
+// the UI renders a true zero-state — never fake or demo data.
 //
 // Environment contract (all optional; absence = not connected):
-//   SOFTWARE_VALA_API_URL          Base URL of the analytics API.
-//   SOFTWARE_VALA_API_KEY          Bearer token for the Authorization header.
-//   SOFTWARE_VALA_ANALYTICS_PATH   Path appended to base URL
-//                                  (default: /v1/influencer/analytics).
+//   SOFTWARE_VALA_API_URL                Base URL of the analytics API.
+//   SOFTWARE_VALA_API_KEY                Bearer token for the Authorization header.
+//   SOFTWARE_VALA_ANALYTICS_PATH         Global override for the analytics path.
+//   SOFTWARE_VALA_<MODULE>_ANALYTICS_PATH  Per-module override, e.g.
+//                                        SOFTWARE_VALA_RESELLER_ANALYTICS_PATH
 
 import {
   emptyDashboardAnalytics,
@@ -18,9 +19,19 @@ import {
   type TimeRange,
 } from "./types";
 
+export type ModuleId = "creator" | "reseller" | "influencer" | "franchise";
+
+const DEFAULT_PATHS: Record<ModuleId, string> = {
+  creator: "/v1/creator/analytics",
+  reseller: "/v1/reseller/analytics",
+  influencer: "/v1/influencer/analytics",
+  franchise: "/v1/franchise/analytics",
+};
+
 export interface FetchAnalyticsParams {
+  module: ModuleId;
   range: TimeRange;
-  influencerId?: string | undefined;
+  scopeId?: string | undefined;
 }
 
 export async function fetchDashboardAnalytics(
@@ -33,10 +44,15 @@ export async function fetchDashboardAnalytics(
     return emptyDashboardAnalytics(params.range);
   }
 
-  const path = process.env["SOFTWARE_VALA_ANALYTICS_PATH"] ?? "/v1/influencer/analytics";
+  const path =
+    process.env[`SOFTWARE_VALA_${params.module.toUpperCase()}_ANALYTICS_PATH`] ??
+    process.env["SOFTWARE_VALA_ANALYTICS_PATH"] ??
+    DEFAULT_PATHS[params.module];
+
   const url = new URL(path, baseUrl);
   url.searchParams.set("range", params.range);
-  if (params.influencerId) url.searchParams.set("influencerId", params.influencerId);
+  url.searchParams.set("module", params.module);
+  if (params.scopeId) url.searchParams.set("scopeId", params.scopeId);
 
   const res = await fetch(url.toString(), {
     method: "GET",
