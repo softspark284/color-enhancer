@@ -52,7 +52,7 @@ type SpeechRecognitionLike = {
 function createRecognition(): SpeechRecognitionLike | null {
   if (typeof window === "undefined") return null;
   const w = window as unknown as Record<string, unknown>;
-  const Ctor = (w.SpeechRecognition ?? w.webkitSpeechRecognition) as
+  const Ctor = (w["SpeechRecognition"] ?? w["webkitSpeechRecognition"]) as
     | (new () => SpeechRecognitionLike)
     | undefined;
   if (!Ctor) return null;

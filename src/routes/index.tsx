@@ -181,6 +181,11 @@ function Index() {
                 void navigate({ to: "/marketplace" });
                 return;
               }
+              if (roleId === "creator_manager") {
+                void navigate({ to: "/creator-manager" });
+                return;
+              }
+
               toast.success(`Switched to ${roleId.replace(/_/g, " ")}`);
             }}
             onLogout={() => toast.info("Logging out...")}

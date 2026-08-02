@@ -110,5 +110,5 @@ export function useBannerFeed() {
 
 // expose for quick manual additions from the console
 if (typeof window !== "undefined") {
-  (window as unknown as Record<string, unknown>).addBannerItem = addBannerItem;
+  (window as unknown as Record<string, unknown>)["addBannerItem"] = addBannerItem;
 }

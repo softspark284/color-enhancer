@@ -29,7 +29,7 @@ export const Route = createFileRoute("/api/chat")({
           return new Response("Messages are required", { status: 400 });
         }
 
-        const key = process.env.LOVABLE_API_KEY;
+        const key = process.env["LOVABLE_API_KEY"];
         if (!key) return new Response("AI is not configured", { status: 500 });
 
         const upstream = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {

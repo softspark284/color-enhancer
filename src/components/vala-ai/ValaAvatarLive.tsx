@@ -226,6 +226,7 @@ export function ValaAvatarLive({
       const t = setTimeout(() => setReaction("none"), 1600);
       return () => clearTimeout(t);
     }
+    return undefined;
   }, [state]);
 
 
