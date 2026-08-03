@@ -58,7 +58,7 @@ import { ValaAiAgent } from "@/components/vala-ai/ValaAiAgent";
 export const Route = createFileRoute("/control-panel")({
   head: () => ({
     meta: [
-      { title: "Master Control Panel — Boss Cockpit" },
+      { title: "Control Panel — Boss Cockpit" },
       {
         name: "description",
         content:
