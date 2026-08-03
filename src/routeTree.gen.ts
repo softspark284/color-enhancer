@@ -15,6 +15,8 @@ import { Route as FranchiseManagerRouteImport } from './routes/franchise-manager
 import { Route as InfluencerManagerRouteImport } from './routes/influencer-manager'
 import { Route as ResellerManagerRouteImport } from './routes/reseller-manager'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as ApplyIndexRouteImport } from './routes/apply.index'
+import { Route as ApplyRoleRouteImport } from './routes/apply.$role'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,6 +48,16 @@ const ApiChatRoute = ApiChatRouteImport.update({
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApplyIndexRoute = ApplyIndexRouteImport.update({
+  id: '/apply/',
+  path: '/apply/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApplyRoleRoute = ApplyRoleRouteImport.update({
+  id: '/apply/$role',
+  path: '/apply/$role',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +66,8 @@ export interface FileRoutesByFullPath {
   '/influencer-manager': typeof InfluencerManagerRoute
   '/reseller-manager': typeof ResellerManagerRoute
   '/api/chat': typeof ApiChatRoute
+  '/apply/$role': typeof ApplyRoleRoute
+  '/apply/': typeof ApplyIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +76,8 @@ export interface FileRoutesByTo {
   '/influencer-manager': typeof InfluencerManagerRoute
   '/reseller-manager': typeof ResellerManagerRoute
   '/api/chat': typeof ApiChatRoute
+  '/apply/$role': typeof ApplyRoleRoute
+  '/apply': typeof ApplyIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,6 +87,8 @@ export interface FileRoutesById {
   '/influencer-manager': typeof InfluencerManagerRoute
   '/reseller-manager': typeof ResellerManagerRoute
   '/api/chat': typeof ApiChatRoute
+  '/apply/$role': typeof ApplyRoleRoute
+  '/apply/': typeof ApplyIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -81,6 +99,8 @@ export interface FileRouteTypes {
     | '/influencer-manager'
     | '/reseller-manager'
     | '/api/chat'
+    | '/apply/$role'
+    | '/apply/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -89,6 +109,8 @@ export interface FileRouteTypes {
     | '/influencer-manager'
     | '/reseller-manager'
     | '/api/chat'
+    | '/apply/$role'
+    | '/apply'
   id:
     | '__root__'
     | '/'
@@ -97,6 +119,8 @@ export interface FileRouteTypes {
     | '/influencer-manager'
     | '/reseller-manager'
     | '/api/chat'
+    | '/apply/$role'
+    | '/apply/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -106,6 +130,8 @@ export interface RootRouteChildren {
   InfluencerManagerRoute: typeof InfluencerManagerRoute
   ResellerManagerRoute: typeof ResellerManagerRoute
   ApiChatRoute: typeof ApiChatRoute
+  ApplyRoleRoute: typeof ApplyRoleRoute
+  ApplyIndexRoute: typeof ApplyIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -152,6 +178,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/apply/': {
+      id: '/apply/'
+      path: '/apply'
+      fullPath: '/apply/'
+      preLoaderRoute: typeof ApplyIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apply/$role': {
+      id: '/apply/$role'
+      path: '/apply/$role'
+      fullPath: '/apply/$role'
+      preLoaderRoute: typeof ApplyRoleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -162,6 +202,8 @@ const rootRouteChildren: RootRouteChildren = {
   InfluencerManagerRoute: InfluencerManagerRoute,
   ResellerManagerRoute: ResellerManagerRoute,
   ApiChatRoute: ApiChatRoute,
+  ApplyRoleRoute: ApplyRoleRoute,
+  ApplyIndexRoute: ApplyIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
