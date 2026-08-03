@@ -64,7 +64,7 @@ export const Route = createFileRoute("/control-panel")({
         content:
           "Boss/Owner master control panel: premium electric-blue cockpit with live sidebar and a unified 2x20 grid of 40 KPI cards.",
       },
-      { property: "og:title", content: "Master Control Panel — Boss Cockpit" },
+      { property: "og:title", content: "Control Panel — Boss Cockpit" },
       {
         property: "og:description",
         content:
