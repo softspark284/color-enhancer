@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useMarketplaceContent } from "@/lib/marketplace-manager/store";
 import {
   Sparkles, GraduationCap, Hospital, Hotel, ShoppingBag, Wrench, Factory,
   Trophy, Award, BookOpen, Handshake, ChevronRight, Star,
@@ -49,81 +50,90 @@ export const IndustryGrid = () => (
 );
 
 // AI Zone
-const AI_TOOLS = [
-  { name: "AI Product Finder", desc: "Describe your need, get the perfect stack.", icon: SearchIcon, accent: "text-fuchsia-300", ring: "border-fuchsia-400/30" },
-  { name: "AI Recommendation", desc: "Personalised picks from 200+ products.", icon: Sparkles, accent: "text-cyan-300", ring: "border-cyan-400/30" },
-  { name: "AI Compare", desc: "Side-by-side feature & price intelligence.", icon: Brain, accent: "text-violet-300", ring: "border-violet-400/30" },
-  { name: "AI Sales Assistant", desc: "24/7 chat copilot for buyers & vendors.", icon: Bot, accent: "text-emerald-300", ring: "border-emerald-400/30" },
+const AI_STYLES = [
+  { icon: SearchIcon, accent: "text-fuchsia-300", ring: "border-fuchsia-400/30" },
+  { icon: Sparkles, accent: "text-cyan-300", ring: "border-cyan-400/30" },
+  { icon: Brain, accent: "text-violet-300", ring: "border-violet-400/30" },
+  { icon: Bot, accent: "text-emerald-300", ring: "border-emerald-400/30" },
 ];
 
-export const AIZone = () => (
-  <section className="py-10">
-    {sectionTitle("AI Zone", "#All", "Automation copilots built into the marketplace")}
-    <div className="grid grid-cols-1 gap-4 px-6 sm:grid-cols-2 lg:grid-cols-4">
-      {AI_TOOLS.map((t) => (
-        <a key={t.name} href="#AI%20%26%20Automation" className={`group relative overflow-hidden rounded-2xl border ${t.ring} bg-gradient-to-br from-white/[0.04] to-white/[0.01] p-5 transition-all hover:-translate-y-1 hover:shadow-[0_24px_60px_-20px_rgba(217,70,239,0.45)]`}>
-          <div className={`mb-3 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-white/5 ${t.accent}`}>
-            <t.icon className="h-5 w-5" />
-          </div>
-          <div className="text-sm font-bold text-white">{t.name}</div>
-          <p className="mt-1 text-xs text-white/60">{t.desc}</p>
-          <div className="mt-4 flex items-center gap-1 text-[11px] font-semibold text-cyan-300">
-            Open tool <ArrowRight className="h-3 w-3" />
-          </div>
-        </a>
-      ))}
-    </div>
-  </section>
-);
+export const AIZone = () => {
+  const { aiTools } = useMarketplaceContent();
+  return (
+    <section className="py-10">
+      {sectionTitle("AI Zone", "#All", "Automation copilots built into the marketplace")}
+      <div className="grid grid-cols-1 gap-4 px-6 sm:grid-cols-2 lg:grid-cols-4">
+        {aiTools.map((t, i) => {
+          const st = AI_STYLES[i % AI_STYLES.length]!;
+          return (
+            <a key={t.id} href="#AI%20%26%20Automation" className={`group relative overflow-hidden rounded-2xl border ${st.ring} bg-gradient-to-br from-white/[0.04] to-white/[0.01] p-5 transition-all hover:-translate-y-1 hover:shadow-[0_24px_60px_-20px_rgba(217,70,239,0.45)]`}>
+              <div className={`mb-3 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-white/5 ${st.accent}`}>
+                <st.icon className="h-5 w-5" />
+              </div>
+              <div className="text-sm font-bold text-white">{t.name}</div>
+              <p className="mt-1 text-xs text-white/60">{t.desc}</p>
+              <div className="mt-4 flex items-center gap-1 text-[11px] font-semibold text-cyan-300">
+                Open tool <ArrowRight className="h-3 w-3" />
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  );
+};
 
 // Success Stories
-const STORIES = [
-  { name: "Apollo Clinics", quote: "MediCore 360 cut patient onboarding from 12 min to 90 sec across 42 branches.", author: "Dr. Neha R., CIO", metric: "−87% wait time" },
-  { name: "GreenLeaf Schools", quote: "EduFlow Pro replaced 6 tools. Teachers got 9 hours back per week.", author: "Rakesh M., Principal", metric: "9 hrs / week" },
-  { name: "Coastal Stays", quote: "HotelNest pushed our direct bookings from 18% to 54% in one quarter.", author: "Anita V., Owner", metric: "+200% direct" },
-];
-
-export const SuccessStories = () => (
-  <section className="py-10">
-    {sectionTitle("Success Stories", "#All")}
-    <div className="grid grid-cols-1 gap-4 px-6 lg:grid-cols-3">
-      {STORIES.map((s) => (
-        <article key={s.name} className="relative overflow-hidden rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.04] to-transparent p-6">
-          <Quote className="absolute right-4 top-4 h-8 w-8 text-cyan-400/20" />
-          <div className="text-xs font-semibold uppercase tracking-wider text-cyan-300">{s.name}</div>
-          <p className="mt-3 text-sm leading-relaxed text-white/85">"{s.quote}"</p>
-          <div className="mt-4 flex items-center justify-between border-t border-white/5 pt-3">
-            <div className="text-[11px] text-white/60">{s.author}</div>
-            <div className="rounded-full border border-emerald-400/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-300">{s.metric}</div>
-          </div>
-        </article>
-      ))}
-    </div>
-  </section>
-);
+export const SuccessStories = () => {
+  const { stories } = useMarketplaceContent();
+  return (
+    <section className="py-10">
+      {sectionTitle("Success Stories", "#All")}
+      <div className="grid grid-cols-1 gap-4 px-6 lg:grid-cols-3">
+        {stories.map((s) => (
+          <article key={s.id} className="relative overflow-hidden rounded-2xl border border-white/[0.07] bg-gradient-to-b from-white/[0.04] to-transparent p-6">
+            <Quote className="absolute right-4 top-4 h-8 w-8 text-cyan-400/20" />
+            <div className="text-xs font-semibold uppercase tracking-wider text-cyan-300">{s.name}</div>
+            <p className="mt-3 text-sm leading-relaxed text-white/85">"{s.quote}"</p>
+            <div className="mt-4 flex items-center justify-between border-t border-white/5 pt-3">
+              <div className="text-[11px] text-white/60">{s.author}</div>
+              <div className="rounded-full border border-emerald-400/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-300">{s.metric}</div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+};
 
 // Awards & Champions
-const AWARDS = [
-  { title: "Vendor of the Year", who: "MediCore Labs", icon: Trophy, color: "text-amber-300", ring: "border-amber-400/30" },
-  { title: "Fastest Growing App", who: "ShopEngine", icon: Zap, color: "text-cyan-300", ring: "border-cyan-400/30" },
-  { title: "Editor's Choice", who: "EduFlow Pro", icon: Award, color: "text-fuchsia-300", ring: "border-fuchsia-400/30" },
-  { title: "Most Loved by Users", who: "HotelNest", icon: Star, color: "text-rose-300", ring: "border-rose-400/30" },
+const AWARD_STYLES = [
+  { icon: Trophy, color: "text-amber-300", ring: "border-amber-400/30" },
+  { icon: Zap, color: "text-cyan-300", ring: "border-cyan-400/30" },
+  { icon: Award, color: "text-fuchsia-300", ring: "border-fuchsia-400/30" },
+  { icon: Star, color: "text-rose-300", ring: "border-rose-400/30" },
 ];
 
-export const AwardsRow = () => (
-  <section className="py-10">
-    {sectionTitle("Awards & Champions", "#All")}
-    <div className="grid grid-cols-2 gap-4 px-6 lg:grid-cols-4">
-      {AWARDS.map((a) => (
-        <div key={a.title} className={`rounded-2xl border ${a.ring} bg-white/[0.03] p-5`}>
-          <a.icon className={`h-7 w-7 ${a.color}`} />
-          <div className="mt-3 text-[11px] uppercase tracking-wider text-white/60">{a.title}</div>
-          <div className="mt-1 text-base font-bold text-white">{a.who}</div>
-        </div>
-      ))}
-    </div>
-  </section>
-);
+export const AwardsRow = () => {
+  const { awards } = useMarketplaceContent();
+  return (
+    <section className="py-10">
+      {sectionTitle("Awards & Champions", "#All")}
+      <div className="grid grid-cols-2 gap-4 px-6 lg:grid-cols-4">
+        {awards.map((a, i) => {
+          const st = AWARD_STYLES[i % AWARD_STYLES.length]!;
+          return (
+            <div key={a.id} className={`rounded-2xl border ${st.ring} bg-white/[0.03] p-5`}>
+              <st.icon className={`h-7 w-7 ${st.color}`} />
+              <div className="mt-3 text-[11px] uppercase tracking-wider text-white/60">{a.title}</div>
+              <div className="mt-1 text-base font-bold text-white">{a.who}</div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+};
 
 // Live Activity
 const seedEvents = () => [
@@ -167,36 +177,66 @@ export const LiveActivity = () => {
 };
 
 // Vala TV
-const VIDEOS = [
-  { title: "How MediCore 360 powers 42 hospitals", duration: "4:12", views: "12k" },
-  { title: "Inside ShopEngine — multi-vendor at scale", duration: "7:48", views: "8.3k" },
-  { title: "Build a school OS with EduFlow", duration: "5:21", views: "15k" },
-  { title: "FactoryOS predictive maintenance demo", duration: "6:02", views: "4.1k" },
-];
+const embedUrl = (url: string) => {
+  const yt = url.match(/(?:youtu\.be\/|v=|youtube\.com\/embed\/)([\w-]{6,})/);
+  if (yt) return `https://www.youtube.com/embed/${yt[1]}?autoplay=1`;
+  const vm = url.match(/vimeo\.com\/(\d+)/);
+  if (vm) return `https://player.vimeo.com/video/${vm[1]}?autoplay=1`;
+  return url;
+};
 
-export const ValaTV = () => (
-  <section className="py-10">
-    {sectionTitle("Vala TV", "/demos", "Demos, walkthroughs, customer films")}
-    <div className="grid grid-cols-1 gap-4 px-6 sm:grid-cols-2 lg:grid-cols-4">
-      {VIDEOS.map((v) => (
-        <div key={v.title} className="group relative overflow-hidden rounded-xl border border-white/[0.07] bg-gradient-to-br from-[oklch(0.2_0.06_265)] to-[oklch(0.14_0.05_265)] transition-all hover:border-fuchsia-400/40">
-          <div className="relative aspect-video w-full overflow-hidden bg-gradient-to-br from-fuchsia-500/20 via-cyan-500/10 to-transparent">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-gray-900 shadow-2xl transition-transform group-hover:scale-110">
-                <Play className="h-5 w-5 fill-current" />
+export const ValaTV = () => {
+  const { videos } = useMarketplaceContent();
+  const [playing, setPlaying] = useState<string | null>(null);
+  return (
+    <section className="py-10">
+      {sectionTitle("Vala TV", "/marketplace-manager", "Demos, walkthroughs, customer films")}
+      <div className="grid grid-cols-1 gap-4 px-6 sm:grid-cols-2 lg:grid-cols-4">
+        {videos.map((v) => {
+          const isPlaying = playing === v.id && !!v.url;
+          const isFile = /\.(mp4|webm|ogg)(\?|$)/i.test(v.url);
+          return (
+            <div key={v.id} className="group relative overflow-hidden rounded-xl border border-white/[0.07] bg-gradient-to-br from-[oklch(0.2_0.06_265)] to-[oklch(0.14_0.05_265)] transition-all hover:border-fuchsia-400/40">
+              <div className="relative aspect-video w-full overflow-hidden bg-gradient-to-br from-fuchsia-500/20 via-cyan-500/10 to-transparent">
+                {isPlaying ? (
+                  isFile ? (
+                    <video src={v.url} controls autoPlay className="h-full w-full object-cover" />
+                  ) : (
+                    <iframe
+                      src={embedUrl(v.url)}
+                      title={v.title}
+                      allow="accelerometer; autoplay; encrypted-media; picture-in-picture"
+                      allowFullScreen
+                      className="h-full w-full"
+                    />
+                  )
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => v.url && setPlaying(v.id)}
+                    aria-label={v.url ? `Play ${v.title}` : `${v.title} — video coming soon`}
+                    className="absolute inset-0 flex items-center justify-center"
+                  >
+                    <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-gray-900 shadow-2xl transition-transform group-hover:scale-110">
+                      <Play className="h-5 w-5 fill-current" />
+                    </span>
+                  </button>
+                )}
+                {!isPlaying && v.duration && (
+                  <span className="absolute bottom-2 right-2 rounded bg-black/70 px-1.5 py-0.5 text-[10px] font-bold text-white">{v.duration}</span>
+                )}
+              </div>
+              <div className="p-3">
+                <div className="text-sm font-semibold text-white line-clamp-2">{v.title}</div>
+                <div className="mt-1 text-[11px] text-white/60">{v.views ? `${v.views} views` : "Vala TV"}</div>
               </div>
             </div>
-            <span className="absolute bottom-2 right-2 rounded bg-black/70 px-1.5 py-0.5 text-[10px] font-bold text-white">{v.duration}</span>
-          </div>
-          <div className="p-3">
-            <div className="text-sm font-semibold text-white line-clamp-2">{v.title}</div>
-            <div className="mt-1 text-[11px] text-white/60">{v.views} views</div>
-          </div>
-        </div>
-      ))}
-    </div>
-  </section>
-);
+          );
+        })}
+      </div>
+    </section>
+  );
+};
 
 // Academy
 export const Academy = () => {
@@ -250,25 +290,18 @@ export const PartnerEcosystem = () => (
   </section>
 );
 
-// FAQ
-const FAQS = [
-  { q: "How does 2-hour delivery work?", a: "Once payment is confirmed (or demo approved), provisioning triggers and credentials are emailed within 120 minutes." },
-  { q: "Can I try before paying?", a: "Yes — every product offers an instant live demo and a 14-day trial with no credit card." },
-  { q: "What does the lifetime license include?", a: "One-time payment, unlimited use on a single domain, all major version updates for life, and lifetime support." },
-  { q: "Do you offer white-label and reseller rights?", a: "Yes — pick the Reseller or White-Label plan and launch under your own brand within 24 hours." },
-  { q: "Is the platform enterprise-ready?", a: "ISO-aligned controls, SOC-ready logging, regional data residency and dedicated success engineers for teams of 100+." },
-];
-
+// FAQ — content managed from /marketplace-manager
 export const FaqSection = () => {
+  const { faqs } = useMarketplaceContent();
   const [open, setOpen] = useState(0);
   return (
-    <section className="py-10">
-      {sectionTitle("Frequently Asked Questions")}
+    <section id="faq" className="py-10 scroll-mt-24">
+      {sectionTitle("Frequently Asked Questions", "/marketplace-manager", "Everything about pricing, delivery, white label and support")}
       <div className="mx-6 max-w-4xl space-y-2">
-        {FAQS.map((f, i) => {
+        {faqs.map((f, i) => {
           const isOpen = open === i;
           return (
-            <button key={f.q} onClick={() => setOpen(isOpen ? -1 : i)} className={`w-full overflow-hidden rounded-xl border text-left transition-all ${isOpen ? "border-cyan-400/40 bg-cyan-500/[0.04]" : "border-white/[0.07] bg-white/[0.02] hover:border-white/15"}`}>
+            <button key={f.id} onClick={() => setOpen(isOpen ? -1 : i)} className={`w-full overflow-hidden rounded-xl border text-left transition-all ${isOpen ? "border-cyan-400/40 bg-cyan-500/[0.04]" : "border-white/[0.07] bg-white/[0.02] hover:border-white/15"}`}>
               <div className="flex items-center gap-3 px-5 py-4">
                 <HelpCircle className={`h-4 w-4 flex-shrink-0 ${isOpen ? "text-cyan-300" : "text-white/60"}`} />
                 <span className="flex-1 text-sm font-semibold text-white">{f.q}</span>

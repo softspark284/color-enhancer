@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useRef, useState } from "react";
 
 import { motion } from "framer-motion";
 import { toast } from "sonner";
@@ -12,7 +12,8 @@ import {
   Clock, Calendar, Briefcase, UserCog, Fingerprint, ShoppingBag, Store, Globe,
   Headphones, MessageSquare, Scale, Shield, Lock, Server, Cpu, Database,
   Wifi, Camera, Key, AlertTriangle, HardDrive, Eye, Radio, PhoneCall,
-  Mic, MonitorPlay, FileCheck, Gavel, ScrollText, Vote, Building2, Lightbulb, Code2, Tag
+  Mic, MonitorPlay, FileCheck, Gavel, ScrollText, Vote, Building2, Lightbulb, Code2, Tag,
+  ChevronLeft, ChevronRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,6 +30,8 @@ import {
   ValaTV, Academy as ValaAcademy, PartnerEcosystem, FaqSection, EnterpriseCTA,
 } from "@/components/marketplace-home/RefSections";
 import { extraDemos, allMasterCategories55 } from "@/data/extraDemos";
+import { expandCategoryRow } from "@/data/relatedCatalog";
+import { SOFTWARE_COUNT, CATEGORY_COUNT, LIFETIME_PRICE, LIFETIME_LABEL } from "@/lib/marketplace-content/stats";
 
 interface Demo {
   id: string;
@@ -3434,8 +3437,9 @@ const Index = () => {
           {/* Group by Master Category when "All" is selected */}
           {activeCategory === "All" ? (
             masterCategories.slice(1).map(masterCat => {
-              const categoryDemos = filteredDemos.filter(d => d.masterCategory === masterCat);
-              if (categoryDemos.length === 0) return null;
+              const matched = filteredDemos.filter(d => d.masterCategory === masterCat);
+              if (matched.length === 0) return null;
+              const categoryDemos = searchQuery ? matched : expandCategoryRow(masterCat, matched);
               
               return (
                 <div key={masterCat} id={masterCat} className="mb-12 scroll-mt-32">
@@ -3445,23 +3449,17 @@ const Index = () => {
                       {categoryDemos.length} Products
                     </Badge>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {categoryDemos.map((demo, index) => (
-                      <DemoCard 
-                        key={demo.id} 
-                        demo={demo} 
-                        index={index}
-                        isFavorite={favorites.includes(demo.id)}
-                        onToggleFavorite={() => toggleFavorite(demo.id)}
-                      />
-                    ))}
-                  </div>
+                  <CategoryRail
+                    demos={categoryDemos}
+                    favorites={favorites}
+                    onToggleFavorite={toggleFavorite}
+                  />
                 </div>
               );
             })
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredDemos.map((demo, index) => (
+              {(searchQuery ? filteredDemos : expandCategoryRow(activeCategory, filteredDemos)).map((demo, index) => (
                 <DemoCard 
                   key={demo.id} 
                   demo={demo} 
@@ -3492,9 +3490,55 @@ const Index = () => {
       <footer className="bg-[#0a1628] border-t border-cyan-500/20 py-8 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <p className="text-gray-400">© 2024 Software Vala - The Name of Trust. All rights reserved.</p>
-          <p className="text-cyan-400 mt-2">55 Master Categories • {allDemos.length} Software Solutions • 20 Live Demos Ready</p>
+          <p className="text-cyan-400 mt-2">{CATEGORY_COUNT} Master Categories • {SOFTWARE_COUNT} Software Solutions • One Price {LIFETIME_PRICE} {LIFETIME_LABEL}</p>
         </div>
       </footer>
+    </div>
+  );
+};
+
+/** Netflix-style horizontal rail used by every master-category row. */
+const CategoryRail = ({ demos, favorites, onToggleFavorite }: {
+  demos: Demo[];
+  favorites: string[];
+  onToggleFavorite: (id: string) => void;
+}) => {
+  const railRef = useRef<HTMLDivElement>(null);
+  const scrollBy = (dir: 1 | -1) => {
+    const el = railRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * Math.max(el.clientWidth * 0.85, 320), behavior: "smooth" });
+  };
+  return (
+    <div className="group/rail relative">
+      <button
+        type="button"
+        aria-label="Scroll left"
+        onClick={() => scrollBy(-1)}
+        className="absolute -left-3 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-cyan-400/30 bg-[#0d1e36]/90 text-cyan-200 shadow-xl backdrop-blur transition-opacity md:flex"
+      >
+        <ChevronLeft className="h-5 w-5" />
+      </button>
+      <div ref={railRef} className="sv-rail gap-6 py-2 pr-6">
+        {demos.map((demo, index) => (
+          <div key={demo.id} className="w-[280px] sm:w-[300px]">
+            <DemoCard
+              demo={demo}
+              index={index}
+              isFavorite={favorites.includes(demo.id)}
+              onToggleFavorite={() => onToggleFavorite(demo.id)}
+            />
+          </div>
+        ))}
+      </div>
+      <button
+        type="button"
+        aria-label="Scroll right"
+        onClick={() => scrollBy(1)}
+        className="absolute -right-3 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-cyan-400/30 bg-[#0d1e36]/90 text-cyan-200 shadow-xl backdrop-blur transition-opacity md:flex"
+      >
+        <ChevronRight className="h-5 w-5" />
+      </button>
     </div>
   );
 };
@@ -3626,13 +3670,13 @@ const DemoCard = memo(({ demo, index, isFavorite, onToggleFavorite }: {
 
             {/* Price with animation */}
             <div className="flex items-baseline gap-2 mb-4">
-              <span className="text-gray-500 line-through text-[13px]">{demo.price}</span>
               <span className="sv-price text-emerald-300 font-black text-[22px] tracking-[-0.02em]">
-                {demo.discountPrice}
+                {LIFETIME_PRICE}
               </span>
-              <Badge className="bg-red-500/20 text-red-300 border-red-500/30 text-[10px] font-bold">
-                40% OFF
+              <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/30 text-[10px] font-bold">
+                {LIFETIME_LABEL}
               </Badge>
+              <span className="text-[11px] text-white/50">one price · all products</span>
             </div>
 
             {/* Enhanced Actions */}
@@ -3646,7 +3690,7 @@ const DemoCard = memo(({ demo, index, isFavorite, onToggleFavorite }: {
                   </a>
                   <Button 
                     className="sv-btn sv-btn-emerald flex-1"
-                    onClick={() => toast.success("🎉 Redirecting to purchase...", { description: `${demo.name} - ${demo.discountPrice}` })}
+                    onClick={() => toast.success("🎉 Redirecting to purchase...", { description: `${demo.name} - ${LIFETIME_PRICE} ${LIFETIME_LABEL}` })}
                   >
                     <ShoppingCart className="h-4 w-4 mr-2" /> Buy Now
                   </Button>
