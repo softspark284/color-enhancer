@@ -21,6 +21,7 @@ import { Route as ResellerManagerRouteImport } from './routes/reseller-manager'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as ApplyIndexRouteImport } from './routes/apply.index'
 import { Route as ApplyRoleRouteImport } from './routes/apply.$role'
+import { Route as DashboardRoleRouteImport } from './routes/dashboard.$role'
 import { Route as QrApproveTokenRouteImport } from './routes/qr-approve.$token'
 
 const IndexRoute = IndexRouteImport.update({
@@ -83,6 +84,11 @@ const ApplyRoleRoute = ApplyRoleRouteImport.update({
   path: '/apply/$role',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardRoleRoute = DashboardRoleRouteImport.update({
+  id: '/dashboard/$role',
+  path: '/dashboard/$role',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const QrApproveTokenRoute = QrApproveTokenRouteImport.update({
   id: '/qr-approve/$token',
   path: '/qr-approve/$token',
@@ -101,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/reseller-manager': typeof ResellerManagerRoute
   '/api/chat': typeof ApiChatRoute
   '/apply/$role': typeof ApplyRoleRoute
+  '/dashboard/$role': typeof DashboardRoleRoute
   '/qr-approve/$token': typeof QrApproveTokenRoute
   '/apply/': typeof ApplyIndexRoute
 }
@@ -116,6 +123,7 @@ export interface FileRoutesByTo {
   '/reseller-manager': typeof ResellerManagerRoute
   '/api/chat': typeof ApiChatRoute
   '/apply/$role': typeof ApplyRoleRoute
+  '/dashboard/$role': typeof DashboardRoleRoute
   '/qr-approve/$token': typeof QrApproveTokenRoute
   '/apply': typeof ApplyIndexRoute
 }
@@ -132,6 +140,7 @@ export interface FileRoutesById {
   '/reseller-manager': typeof ResellerManagerRoute
   '/api/chat': typeof ApiChatRoute
   '/apply/$role': typeof ApplyRoleRoute
+  '/dashboard/$role': typeof DashboardRoleRoute
   '/qr-approve/$token': typeof QrApproveTokenRoute
   '/apply/': typeof ApplyIndexRoute
 }
@@ -149,6 +158,7 @@ export interface FileRouteTypes {
     | '/reseller-manager'
     | '/api/chat'
     | '/apply/$role'
+    | '/dashboard/$role'
     | '/qr-approve/$token'
     | '/apply/'
   fileRoutesByTo: FileRoutesByTo
@@ -164,6 +174,7 @@ export interface FileRouteTypes {
     | '/reseller-manager'
     | '/api/chat'
     | '/apply/$role'
+    | '/dashboard/$role'
     | '/qr-approve/$token'
     | '/apply'
   id:
@@ -179,6 +190,7 @@ export interface FileRouteTypes {
     | '/reseller-manager'
     | '/api/chat'
     | '/apply/$role'
+    | '/dashboard/$role'
     | '/qr-approve/$token'
     | '/apply/'
   fileRoutesById: FileRoutesById
@@ -195,6 +207,7 @@ export interface RootRouteChildren {
   ResellerManagerRoute: typeof ResellerManagerRoute
   ApiChatRoute: typeof ApiChatRoute
   ApplyRoleRoute: typeof ApplyRoleRoute
+  DashboardRoleRoute: typeof DashboardRoleRoute
   QrApproveTokenRoute: typeof QrApproveTokenRoute
   ApplyIndexRoute: typeof ApplyIndexRoute
 }
@@ -285,6 +298,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApplyRoleRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/$role': {
+      id: '/dashboard/$role'
+      path: '/dashboard/$role'
+      fullPath: '/dashboard/$role'
+      preLoaderRoute: typeof DashboardRoleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/qr-approve/$token': {
       id: '/qr-approve/$token'
       path: '/qr-approve/$token'
@@ -307,6 +327,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResellerManagerRoute: ResellerManagerRoute,
   ApiChatRoute: ApiChatRoute,
   ApplyRoleRoute: ApplyRoleRoute,
+  DashboardRoleRoute: DashboardRoleRoute,
   QrApproveTokenRoute: QrApproveTokenRoute,
   ApplyIndexRoute: ApplyIndexRoute,
 }

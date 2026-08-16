@@ -19,13 +19,15 @@ import {
   type TimeRange,
 } from "./types";
 
-export type ModuleId = "creator" | "reseller" | "influencer" | "franchise";
+export type ModuleId = "creator" | "reseller" | "influencer" | "franchise" | "affiliate" | "author";
 
 const DEFAULT_PATHS: Record<ModuleId, string> = {
   creator: "/v1/creator/analytics",
   reseller: "/v1/reseller/analytics",
   influencer: "/v1/influencer/analytics",
   franchise: "/v1/franchise/analytics",
+  affiliate: "/v1/affiliate/analytics",
+  author: "/v1/author/analytics",
 };
 
 export interface FetchAnalyticsParams {
