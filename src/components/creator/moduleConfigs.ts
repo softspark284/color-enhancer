@@ -285,3 +285,141 @@ export const franchiseConfig: ModuleConfig = {
     "Compliance gaps block royalty settlement — clear open findings first.",
   ],
 };
+
+export const affiliateConfig: ModuleConfig = {
+  id: "affiliate",
+  brand: "Affiliate Hub",
+  brandMark: "AH",
+  eyebrow: "Software Vala Affiliate Program",
+  title: "Affiliate Dashboard",
+  subtitle:
+    "Track your links, clicks, conversions and lifetime commission on every Software Vala product you promote.",
+  primary: influencerPrimary,
+  groups: influencerGroups,
+  defaultModule: "Affiliate Console",
+  kpis: [
+    { key: "clicks", label: "Clicks", icon: MousePointerClick, tint: "text-accent-pink" },
+    { key: "leads", label: "Leads", icon: Target, tint: "text-primary-glow" },
+    { key: "sales", label: "Sales", icon: ShoppingBag, tint: "text-accent-emerald" },
+    { key: "conversion", label: "Conversion", icon: BarChart3, tint: "text-accent-amber" },
+    { key: "campaigns", label: "Campaigns", icon: Megaphone, tint: "text-accent-pink" },
+    { key: "payouts", label: "Payouts", icon: Coins, tint: "text-primary-glow" },
+    { key: "commissions", label: "Commission", icon: Wallet, tint: "text-accent-emerald" },
+  ],
+  primaryCta: { label: "Create a Link", target: "Campaigns" },
+  secondaryCta: { label: "Ask AI", target: "AI Chat" },
+  profile: {
+    title: "Affiliate Profile",
+    caption: "Signed in with Software Vala",
+    stats: [
+      ["Links", "—"],
+      ["Tier", "—"],
+      ["Streak", "0d"],
+    ],
+  },
+  plan: [
+    ["Check link performance", "Analytics", "9:00 AM"],
+    ["Publish a promo post", "Campaigns", "12:30 PM"],
+    ["Request payout", "Finance", "6:00 PM"],
+    ["Answer buyer questions", "All channels", "9:00 PM"],
+  ],
+  balance: {
+    label: "Commission balance",
+    key: "commissions",
+    action: "Open wallet",
+    target: "Wallet",
+  },
+  walls: [
+    {
+      title: "Your Links",
+      icon: Handshake,
+      tint: "text-primary-glow",
+      action: "View all",
+      target: "Campaigns",
+      empty: "No affiliate links yet. Create your first tracking link.",
+    },
+    {
+      title: "Top Products",
+      icon: Package,
+      tint: "text-accent-pink",
+      action: "View all",
+      target: "Products",
+      empty: "Best-converting products appear here after your first click.",
+    },
+  ],
+  leaderboardEmpty: "Awaiting affiliate activity",
+  suggestions: [
+    "Short-form video links convert 2.3× better than banner links.",
+    "Add your link to the pinned comment — it lifts click-through by ~18%.",
+    "Promote the lifetime $249 bundle: highest payout per conversion.",
+  ],
+};
+
+export const authorConfig: ModuleConfig = {
+  id: "author",
+  brand: "Author Studio",
+  brandMark: "AS",
+  eyebrow: "Software Vala Author Program",
+  title: "Author Dashboard",
+  subtitle:
+    "Publish products and content, track views and sales, and settle your author royalty in one studio.",
+  primary: creatorPrimary,
+  groups: creatorGroups,
+  defaultModule: "Author Console",
+  kpis: [
+    { key: "content", label: "Publications", icon: Package, tint: "text-accent-pink" },
+    { key: "views", label: "Views", icon: Eye, tint: "text-primary-glow" },
+    { key: "reach", label: "Reach", icon: TrendingUp, tint: "text-accent-emerald" },
+    { key: "leads", label: "Leads", icon: Target, tint: "text-accent-amber" },
+    { key: "sales", label: "Sales", icon: ShoppingBag, tint: "text-accent-pink" },
+    { key: "royalty", label: "Royalty", icon: Coins, tint: "text-primary-glow" },
+    { key: "payouts", label: "Payouts", icon: Wallet, tint: "text-accent-emerald" },
+  ],
+  primaryCta: { label: "Publish Content", target: "Content" },
+  secondaryCta: { label: "Ask AI", target: "AI Chat" },
+  profile: {
+    title: "Author Profile",
+    caption: "Signed in with Software Vala",
+    stats: [
+      ["Titles", "—"],
+      ["Rank", "—"],
+      ["Streak", "0d"],
+    ],
+  },
+  plan: [
+    ["Review draft queue", "Content", "9:00 AM"],
+    ["Publish scheduled title", "Content", "12:30 PM"],
+    ["Royalty statement check", "Finance", "6:00 PM"],
+    ["Reader Q&A", "All channels", "9:00 PM"],
+  ],
+  balance: {
+    label: "Royalty balance",
+    key: "royalty",
+    action: "Open wallet",
+    target: "Wallet",
+  },
+  walls: [
+    {
+      title: "Your Publications",
+      icon: Package,
+      tint: "text-primary-glow",
+      action: "View all",
+      target: "Content",
+      empty: "Nothing published yet. Your titles will appear here.",
+    },
+    {
+      title: "Reader Highlights",
+      icon: Heart,
+      tint: "text-accent-pink",
+      action: "View all",
+      target: "Audience",
+      empty: "Reader activity shows up after your first publication.",
+    },
+  ],
+  leaderboardEmpty: "Awaiting author activity",
+  suggestions: [
+    "Titles with a 60-second preview video sell ~30% more.",
+    "Republish your best guide as a checklist to reach a new audience.",
+    "Bundle two related titles to lift average order value.",
+  ],
+};
