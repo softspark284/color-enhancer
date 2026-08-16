@@ -10,19 +10,27 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ChatRouteImport } from './routes/chat'
 import { Route as ControlPanelRouteImport } from './routes/control-panel'
 import { Route as CreatorManagerRouteImport } from './routes/creator-manager'
 import { Route as FranchiseManagerRouteImport } from './routes/franchise-manager'
 import { Route as InfluencerManagerRouteImport } from './routes/influencer-manager'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as MarketplaceManagerRouteImport } from './routes/marketplace-manager'
 import { Route as ResellerManagerRouteImport } from './routes/reseller-manager'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as ApplyIndexRouteImport } from './routes/apply.index'
 import { Route as ApplyRoleRouteImport } from './routes/apply.$role'
+import { Route as QrApproveTokenRouteImport } from './routes/qr-approve.$token'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChatRoute = ChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ControlPanelRoute = ControlPanelRouteImport.update({
@@ -43,6 +51,11 @@ const FranchiseManagerRoute = FranchiseManagerRouteImport.update({
 const InfluencerManagerRoute = InfluencerManagerRouteImport.update({
   id: '/influencer-manager',
   path: '/influencer-manager',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MarketplaceManagerRoute = MarketplaceManagerRouteImport.update({
@@ -70,93 +83,119 @@ const ApplyRoleRoute = ApplyRoleRouteImport.update({
   path: '/apply/$role',
   getParentRoute: () => rootRouteImport,
 } as any)
+const QrApproveTokenRoute = QrApproveTokenRouteImport.update({
+  id: '/qr-approve/$token',
+  path: '/qr-approve/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/chat': typeof ChatRoute
   '/control-panel': typeof ControlPanelRoute
   '/creator-manager': typeof CreatorManagerRoute
   '/franchise-manager': typeof FranchiseManagerRoute
   '/influencer-manager': typeof InfluencerManagerRoute
+  '/login': typeof LoginRoute
   '/marketplace-manager': typeof MarketplaceManagerRoute
   '/reseller-manager': typeof ResellerManagerRoute
   '/api/chat': typeof ApiChatRoute
   '/apply/$role': typeof ApplyRoleRoute
+  '/qr-approve/$token': typeof QrApproveTokenRoute
   '/apply/': typeof ApplyIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/chat': typeof ChatRoute
   '/control-panel': typeof ControlPanelRoute
   '/creator-manager': typeof CreatorManagerRoute
   '/franchise-manager': typeof FranchiseManagerRoute
   '/influencer-manager': typeof InfluencerManagerRoute
+  '/login': typeof LoginRoute
   '/marketplace-manager': typeof MarketplaceManagerRoute
   '/reseller-manager': typeof ResellerManagerRoute
   '/api/chat': typeof ApiChatRoute
   '/apply/$role': typeof ApplyRoleRoute
+  '/qr-approve/$token': typeof QrApproveTokenRoute
   '/apply': typeof ApplyIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/chat': typeof ChatRoute
   '/control-panel': typeof ControlPanelRoute
   '/creator-manager': typeof CreatorManagerRoute
   '/franchise-manager': typeof FranchiseManagerRoute
   '/influencer-manager': typeof InfluencerManagerRoute
+  '/login': typeof LoginRoute
   '/marketplace-manager': typeof MarketplaceManagerRoute
   '/reseller-manager': typeof ResellerManagerRoute
   '/api/chat': typeof ApiChatRoute
   '/apply/$role': typeof ApplyRoleRoute
+  '/qr-approve/$token': typeof QrApproveTokenRoute
   '/apply/': typeof ApplyIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/chat'
     | '/control-panel'
     | '/creator-manager'
     | '/franchise-manager'
     | '/influencer-manager'
+    | '/login'
     | '/marketplace-manager'
     | '/reseller-manager'
     | '/api/chat'
     | '/apply/$role'
+    | '/qr-approve/$token'
     | '/apply/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/chat'
     | '/control-panel'
     | '/creator-manager'
     | '/franchise-manager'
     | '/influencer-manager'
+    | '/login'
     | '/marketplace-manager'
     | '/reseller-manager'
     | '/api/chat'
     | '/apply/$role'
+    | '/qr-approve/$token'
     | '/apply'
   id:
     | '__root__'
     | '/'
+    | '/chat'
     | '/control-panel'
     | '/creator-manager'
     | '/franchise-manager'
     | '/influencer-manager'
+    | '/login'
     | '/marketplace-manager'
     | '/reseller-manager'
     | '/api/chat'
     | '/apply/$role'
+    | '/qr-approve/$token'
     | '/apply/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ChatRoute: typeof ChatRoute
   ControlPanelRoute: typeof ControlPanelRoute
   CreatorManagerRoute: typeof CreatorManagerRoute
   FranchiseManagerRoute: typeof FranchiseManagerRoute
   InfluencerManagerRoute: typeof InfluencerManagerRoute
+  LoginRoute: typeof LoginRoute
   MarketplaceManagerRoute: typeof MarketplaceManagerRoute
   ResellerManagerRoute: typeof ResellerManagerRoute
   ApiChatRoute: typeof ApiChatRoute
   ApplyRoleRoute: typeof ApplyRoleRoute
+  QrApproveTokenRoute: typeof QrApproveTokenRoute
   ApplyIndexRoute: typeof ApplyIndexRoute
 }
 
@@ -167,6 +206,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chat': {
+      id: '/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof ChatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/control-panel': {
@@ -195,6 +241,13 @@ declare module '@tanstack/react-router' {
       path: '/influencer-manager'
       fullPath: '/influencer-manager'
       preLoaderRoute: typeof InfluencerManagerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/marketplace-manager': {
@@ -232,21 +285,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApplyRoleRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/qr-approve/$token': {
+      id: '/qr-approve/$token'
+      path: '/qr-approve/$token'
+      fullPath: '/qr-approve/$token'
+      preLoaderRoute: typeof QrApproveTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ChatRoute: ChatRoute,
   ControlPanelRoute: ControlPanelRoute,
   CreatorManagerRoute: CreatorManagerRoute,
   FranchiseManagerRoute: FranchiseManagerRoute,
   InfluencerManagerRoute: InfluencerManagerRoute,
+  LoginRoute: LoginRoute,
   MarketplaceManagerRoute: MarketplaceManagerRoute,
   ResellerManagerRoute: ResellerManagerRoute,
   ApiChatRoute: ApiChatRoute,
   ApplyRoleRoute: ApplyRoleRoute,
+  QrApproveTokenRoute: QrApproveTokenRoute,
   ApplyIndexRoute: ApplyIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
