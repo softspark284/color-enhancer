@@ -1,11 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { requireSession } from "@/lib/auth-guard";
+
 import { ModuleDashboard } from "@/components/creator/ModuleDashboard";
 import { PageShell } from "@/components/creator/PageShell";
 import { franchiseConfig } from "@/components/creator/moduleConfigs";
 import { moduleAnalyticsQueryOptions } from "@/lib/creator/analytics.functions";
 
 export const Route = createFileRoute("/franchise-manager")({
+  ssr: false,
+  beforeLoad: () => requireSession("/franchise-manager"),
   head: () => ({
     meta: [
       { title: "Franchise Manager — Software Vala Control Panel" },

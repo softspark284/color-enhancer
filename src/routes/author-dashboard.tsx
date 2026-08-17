@@ -1,11 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { requireSession } from "@/lib/auth-guard";
+
 import { ModuleDashboard } from "@/components/creator/ModuleDashboard";
 import { PageShell } from "@/components/creator/PageShell";
 import { authorConfig } from "@/components/creator/moduleConfigs";
 import { moduleAnalyticsQueryOptions } from "@/lib/creator/analytics.functions";
 
 export const Route = createFileRoute("/author-dashboard")({
+  ssr: false,
+  beforeLoad: () => requireSession("/author-dashboard"),
   head: () => ({
     meta: [
       { title: "Author Dashboard — Software Vala" },
