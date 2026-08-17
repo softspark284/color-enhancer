@@ -16,7 +16,7 @@ import {
 } from "@/lib/auth-methods.functions";
 import { toast } from "sonner";
 import { OwlStage } from "@/components/owl/OwlStage";
-import checkerBgAsset from "@/assets/softwarevala-checker-bg.jpg.asset.json";
+const checkerBgAsset = { url: "/brand/softwarevala-flip.jpg" };
 
 const loginSearchSchema = z.object({ next: z.string().optional() });
 
