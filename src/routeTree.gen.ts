@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AffiliateDashboardRouteImport } from './routes/affiliate-dashboard'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as ControlPanelRouteImport } from './routes/control-panel'
 import { Route as CreatorManagerRouteImport } from './routes/creator-manager'
@@ -27,6 +28,11 @@ import { Route as QrApproveTokenRouteImport } from './routes/qr-approve.$token'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AffiliateDashboardRoute = AffiliateDashboardRouteImport.update({
+  id: '/affiliate-dashboard',
+  path: '/affiliate-dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ChatRoute = ChatRouteImport.update({
@@ -97,6 +103,7 @@ const QrApproveTokenRoute = QrApproveTokenRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/affiliate-dashboard': typeof AffiliateDashboardRoute
   '/chat': typeof ChatRoute
   '/control-panel': typeof ControlPanelRoute
   '/creator-manager': typeof CreatorManagerRoute
@@ -113,6 +120,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/affiliate-dashboard': typeof AffiliateDashboardRoute
   '/chat': typeof ChatRoute
   '/control-panel': typeof ControlPanelRoute
   '/creator-manager': typeof CreatorManagerRoute
@@ -130,6 +138,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/affiliate-dashboard': typeof AffiliateDashboardRoute
   '/chat': typeof ChatRoute
   '/control-panel': typeof ControlPanelRoute
   '/creator-manager': typeof CreatorManagerRoute
@@ -148,6 +157,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/affiliate-dashboard'
     | '/chat'
     | '/control-panel'
     | '/creator-manager'
@@ -164,6 +174,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/affiliate-dashboard'
     | '/chat'
     | '/control-panel'
     | '/creator-manager'
@@ -180,6 +191,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/affiliate-dashboard'
     | '/chat'
     | '/control-panel'
     | '/creator-manager'
@@ -197,6 +209,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AffiliateDashboardRoute: typeof AffiliateDashboardRoute
   ChatRoute: typeof ChatRoute
   ControlPanelRoute: typeof ControlPanelRoute
   CreatorManagerRoute: typeof CreatorManagerRoute
@@ -219,6 +232,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/affiliate-dashboard': {
+      id: '/affiliate-dashboard'
+      path: '/affiliate-dashboard'
+      fullPath: '/affiliate-dashboard'
+      preLoaderRoute: typeof AffiliateDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/chat': {
@@ -317,6 +337,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AffiliateDashboardRoute: AffiliateDashboardRoute,
   ChatRoute: ChatRoute,
   ControlPanelRoute: ControlPanelRoute,
   CreatorManagerRoute: CreatorManagerRoute,
