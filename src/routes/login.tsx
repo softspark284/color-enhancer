@@ -107,7 +107,15 @@ function NexusLogin() {
   const [submitting, setSubmitting] = useState(false);
   const [attempts, setAttempts] = useState(0);
   const [voice, setVoice] = useState(false);
-  const [lang, setLang] = useState("EN");
+  const [lang, setLang] = useState("en");
+
+  // reflect the chosen locale on the document so direction + fonts follow
+  useEffect(() => {
+    const l = findLanguage(lang);
+    document.documentElement.lang = l.code;
+    document.documentElement.dir = l.rtl ? "rtl" : "ltr";
+  }, [lang]);
+
   const [clock, setClock] = useState(() => new Date());
   const [otpSent, setOtpSent] = useState(false);
   const [ssoDomain, setSsoDomain] = useState("");
