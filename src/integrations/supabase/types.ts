@@ -65,6 +65,66 @@ export type Database = {
         }
         Relationships: []
       }
+      hero_slides: {
+        Row: {
+          accent: string
+          created_at: string
+          cta_link: string
+          cta_primary: string
+          cta_secondary: string
+          gradient: string
+          icon_name: string
+          id: string
+          kicker: string
+          position: number
+          published_at: string | null
+          slug: string
+          subtitle: string
+          title: string
+          unpublish_at: string | null
+          updated_at: string
+          visible: boolean
+        }
+        Insert: {
+          accent?: string
+          created_at?: string
+          cta_link?: string
+          cta_primary?: string
+          cta_secondary?: string
+          gradient?: string
+          icon_name?: string
+          id?: string
+          kicker?: string
+          position?: number
+          published_at?: string | null
+          slug: string
+          subtitle?: string
+          title: string
+          unpublish_at?: string | null
+          updated_at?: string
+          visible?: boolean
+        }
+        Update: {
+          accent?: string
+          created_at?: string
+          cta_link?: string
+          cta_primary?: string
+          cta_secondary?: string
+          gradient?: string
+          icon_name?: string
+          id?: string
+          kicker?: string
+          position?: number
+          published_at?: string | null
+          slug?: string
+          subtitle?: string
+          title?: string
+          unpublish_at?: string | null
+          updated_at?: string
+          visible?: boolean
+        }
+        Relationships: []
+      }
       license_keys: {
         Row: {
           created_at: string
