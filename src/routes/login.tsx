@@ -9,6 +9,9 @@ import {
   CheckCircle2, AlertTriangle, ArrowRight, Crown, RefreshCcw,
 } from "lucide-react";
 import { BrandLogo } from "@/components/brand/BrandLogo";
+import { LanguageSelect } from "@/components/i18n/LanguageSelect";
+import { findLanguage } from "@/lib/languages";
+
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import {
