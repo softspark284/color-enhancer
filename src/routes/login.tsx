@@ -6,7 +6,7 @@ import {
   Mail, User, Phone, KeyRound, QrCode, ShieldCheck, Fingerprint, Eye, EyeOff,
   Lock, Globe, Mic, MicOff, Building2,
   Radio, Wifi, Server,
-  CheckCircle2, AlertTriangle, Languages, ArrowRight, Crown, RefreshCcw,
+  CheckCircle2, AlertTriangle, ArrowRight, Crown, RefreshCcw,
 } from "lucide-react";
 import { BrandLogo } from "@/components/brand/BrandLogo";
 import { supabase } from "@/integrations/supabase/client";
