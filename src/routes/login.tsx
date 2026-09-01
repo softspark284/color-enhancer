@@ -116,7 +116,7 @@ function NexusLogin() {
     document.documentElement.dir = l.rtl ? "rtl" : "ltr";
   }, [lang]);
 
-  const [clock, setClock] = useState(() => new Date());
+  const [clock, setClock] = useState<Date | null>(null);
   const [otpSent, setOtpSent] = useState(false);
   const [ssoDomain, setSsoDomain] = useState("");
 
