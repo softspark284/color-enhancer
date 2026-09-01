@@ -977,13 +977,23 @@ function LoginPill({ t }: { t: (s: string) => string }) {
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [role, setRole] = useState<RoleKey | null>(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }: any) => setUserEmail(data.session?.user.email ?? null));
+    let cancelled = false;
+    const sync = async (email: string | null) => {
+      if (cancelled) return;
+      setUserEmail(email);
+      setRole(email ? await getAuthenticatedRole() : null);
+    };
+    supabase.auth.getSession().then(({ data }: any) => sync(data.session?.user.email ?? null));
     const { data: sub } = supabase.auth.onAuthStateChange((_e: any, session: any) =>
-      setUserEmail(session?.user.email ?? null),
+      sync(session?.user.email ?? null),
     );
-    return () => sub.subscription.unsubscribe();
+    return () => {
+      cancelled = true;
+      sub.subscription.unsubscribe();
+    };
   }, []);
 
   const signIn = async () => {
@@ -1001,19 +1011,30 @@ function LoginPill({ t }: { t: (s: string) => string }) {
         <span className="hidden sm:inline">{userEmail ? userEmail.split("@")[0] : t("Login")}</span>
       </PopoverTrigger>
       <PopoverContent align="end" className={PANEL}>
-        <PanelHead icon={LogIn} title={t("Login")} note={userEmail ?? "Sign in to your account"} />
+        <PanelHead icon={LogIn} title={t("Login")} note={userEmail ?? "Sign in to your Nexus OS workspace"} />
         <div className="space-y-2 p-3">
           {userEmail ? (
-            <Button
-              className="w-full"
-              variant="secondary"
-              onClick={async () => {
-                await supabase.auth.signOut();
-                toast.success("Signed out");
-              }}
-            >
-              Sign out
-            </Button>
+            <>
+              {role && (
+                <Link
+                  to="/dashboard/$role"
+                  params={{ role }}
+                  className="block w-full rounded-md bg-white/10 px-3 py-2 text-center text-[12.5px] font-medium text-white hover:bg-white/20"
+                >
+                  Open {roleLabel(role)} Dashboard
+                </Link>
+              )}
+              <Button
+                className="w-full"
+                variant="secondary"
+                onClick={async () => {
+                  await signOut();
+                  toast.success("Signed out");
+                }}
+              >
+                Sign out
+              </Button>
+            </>
           ) : (
             <>
               <Input
@@ -1033,8 +1054,19 @@ function LoginPill({ t }: { t: (s: string) => string }) {
               <Button className="w-full" disabled={busy || !email || !password} onClick={signIn}>
                 {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : t("Login")}
               </Button>
+              <Link
+                to="/login"
+                search={{}}
+                className="block w-full rounded-md bg-gradient-to-r from-fuchsia-500 to-amber-400 px-3 py-2 text-center text-[12.5px] font-semibold text-black hover:opacity-90"
+              >
+                Enter Nexus OS Login
+              </Link>
             </>
           )}
+        </div>
+      </PopoverContent>
+    </Popover>
+
         </div>
       </PopoverContent>
     </Popover>
