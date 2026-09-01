@@ -1066,10 +1066,6 @@ function LoginPill({ t }: { t: (s: string) => string }) {
         </div>
       </PopoverContent>
     </Popover>
-
-        </div>
-      </PopoverContent>
-    </Popover>
   );
 }
 
