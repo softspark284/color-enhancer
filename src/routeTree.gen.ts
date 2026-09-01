@@ -20,6 +20,7 @@ import { Route as InfluencerManagerRouteImport } from './routes/influencer-manag
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as MarketplaceManagerRouteImport } from './routes/marketplace-manager'
 import { Route as ResellerManagerRouteImport } from './routes/reseller-manager'
+import { Route as AdminApplicationsRouteImport } from './routes/admin.applications'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as ApplyIndexRouteImport } from './routes/apply.index'
 import { Route as ApplyRoleRouteImport } from './routes/apply.$role'
@@ -81,6 +82,11 @@ const ResellerManagerRoute = ResellerManagerRouteImport.update({
   path: '/reseller-manager',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminApplicationsRoute = AdminApplicationsRouteImport.update({
+  id: '/admin/applications',
+  path: '/admin/applications',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiChatRoute = ApiChatRouteImport.update({
   id: '/api/chat',
   path: '/api/chat',
@@ -119,6 +125,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/marketplace-manager': typeof MarketplaceManagerRoute
   '/reseller-manager': typeof ResellerManagerRoute
+  '/admin/applications': typeof AdminApplicationsRoute
   '/api/chat': typeof ApiChatRoute
   '/apply/$role': typeof ApplyRoleRoute
   '/dashboard/$role': typeof DashboardRoleRoute
@@ -137,6 +144,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/marketplace-manager': typeof MarketplaceManagerRoute
   '/reseller-manager': typeof ResellerManagerRoute
+  '/admin/applications': typeof AdminApplicationsRoute
   '/api/chat': typeof ApiChatRoute
   '/apply/$role': typeof ApplyRoleRoute
   '/dashboard/$role': typeof DashboardRoleRoute
@@ -156,6 +164,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/marketplace-manager': typeof MarketplaceManagerRoute
   '/reseller-manager': typeof ResellerManagerRoute
+  '/admin/applications': typeof AdminApplicationsRoute
   '/api/chat': typeof ApiChatRoute
   '/apply/$role': typeof ApplyRoleRoute
   '/dashboard/$role': typeof DashboardRoleRoute
@@ -176,6 +185,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/marketplace-manager'
     | '/reseller-manager'
+    | '/admin/applications'
     | '/api/chat'
     | '/apply/$role'
     | '/dashboard/$role'
@@ -194,6 +204,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/marketplace-manager'
     | '/reseller-manager'
+    | '/admin/applications'
     | '/api/chat'
     | '/apply/$role'
     | '/dashboard/$role'
@@ -212,6 +223,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/marketplace-manager'
     | '/reseller-manager'
+    | '/admin/applications'
     | '/api/chat'
     | '/apply/$role'
     | '/dashboard/$role'
@@ -231,6 +243,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   MarketplaceManagerRoute: typeof MarketplaceManagerRoute
   ResellerManagerRoute: typeof ResellerManagerRoute
+  AdminApplicationsRoute: typeof AdminApplicationsRoute
   ApiChatRoute: typeof ApiChatRoute
   ApplyRoleRoute: typeof ApplyRoleRoute
   DashboardRoleRoute: typeof DashboardRoleRoute
@@ -317,6 +330,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResellerManagerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/applications': {
+      id: '/admin/applications'
+      path: '/admin/applications'
+      fullPath: '/admin/applications'
+      preLoaderRoute: typeof AdminApplicationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/chat': {
       id: '/api/chat'
       path: '/api/chat'
@@ -367,6 +387,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   MarketplaceManagerRoute: MarketplaceManagerRoute,
   ResellerManagerRoute: ResellerManagerRoute,
+  AdminApplicationsRoute: AdminApplicationsRoute,
   ApiChatRoute: ApiChatRoute,
   ApplyRoleRoute: ApplyRoleRoute,
   DashboardRoleRoute: DashboardRoleRoute,
