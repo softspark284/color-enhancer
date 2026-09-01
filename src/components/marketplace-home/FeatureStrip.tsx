@@ -3,7 +3,7 @@ import { ShieldCheck, Clock, BadgeCheck, Lock, Layers, Cloud, Globe2 } from "luc
 const ITEMS = [
   { icon: ShieldCheck, label: "No Advance Payment", color: "text-emerald-300" },
   { icon: Clock, label: "2-Hour Delivery", color: "text-cyan-300" },
-  { icon: BadgeCheck, label: "No Hidden Charges", color: "text-amber-300" },
+  { icon: BadgeCheck, label: "No Hidden Charges", color: "text-orange-300" },
   { icon: Lock, label: "Trademark Protected", color: "text-rose-300" },
   { icon: Layers, label: "White Label", color: "text-violet-300" },
   { icon: Cloud, label: "SaaS Software", color: "text-fuchsia-300" },
