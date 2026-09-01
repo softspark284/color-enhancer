@@ -289,7 +289,7 @@ function NexusLogin() {
           <LanguageSelect value={lang} onChange={setLang} />
 
           <span className="hidden sm:inline tabular-nums text-white/50">
-            {clock.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+            {clock ? clock.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "--:--:--"}
           </span>
         </div>
       </div>
