@@ -21,6 +21,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@/lib/serverFn";
 import { supabase } from "@/integrations/supabase/client";
+import { getAuthenticatedRole, signOut } from "@/lib/auth-bridge";
+import { roleLabel, type RoleKey } from "@/lib/roles";
 import { toast } from "sonner";
 import {
   Bell,
