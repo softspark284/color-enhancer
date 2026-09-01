@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { X, PartyPopper, Tag, Handshake, Store, Share2, Building2, Search, Megaphone, Headphones } from "lucide-react";
+import { PartyPopper, Tag, Handshake, Store, Share2, Building2, Search, Megaphone, Headphones } from "lucide-react";
 
 /** Plain (single) premium colours — no gradients, no shades. */
 const COLORS = [
@@ -9,7 +9,7 @@ const COLORS = [
   "bg-[oklch(0.55_0.20_25)]",
   "bg-[oklch(0.58_0.17_150)]",
   "bg-[oklch(0.55_0.19_300)]",
-  "bg-[oklch(0.60_0.17_60)]",
+  "bg-[oklch(0.64_0.18_45)]",
   "bg-[oklch(0.54_0.18_340)]",
   "bg-[oklch(0.55_0.16_230)]",
 ];
@@ -26,7 +26,6 @@ const announcements = [
 ];
 
 const FestiveBanner = () => {
-  const [dismissed, setDismissed] = useState(false);
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -34,7 +33,6 @@ const FestiveBanner = () => {
     return () => clearInterval(t);
   }, []);
 
-  if (dismissed) return null;
   const item = announcements[index]!;
   const Icon = item.icon;
   const color = COLORS[index % COLORS.length];
@@ -53,13 +51,6 @@ const FestiveBanner = () => {
             <Tag className="w-3 h-3 flex-shrink-0 hidden sm:block" />
           </div>
         </div>
-
-        <button
-          onClick={() => setDismissed(true)}
-          className="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-5 h-5 rounded-full bg-white/20 hover:bg-white/35 flex items-center justify-center text-white transition-colors border border-white/25"
-        >
-          <X className="w-3 h-3" />
-        </button>
       </div>
     </div>
   );
