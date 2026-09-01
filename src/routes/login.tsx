@@ -126,6 +126,7 @@ function NexusLogin() {
   }, []);
 
   useEffect(() => {
+    setClock(new Date());
     const t = setInterval(() => setClock(new Date()), 1000);
     return () => clearInterval(t);
   }, []);
