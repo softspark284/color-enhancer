@@ -12,7 +12,7 @@ export interface FaqItem { id: string; q: string; a: string }
 export interface VideoItem { id: string; title: string; url: string; duration: string; views: string }
 export interface StoryItem { id: string; name: string; quote: string; author: string; metric: string }
 export interface AwardItem { id: string; title: string; who: string }
-export interface AiToolItem { id: string; name: string; desc: string }
+export interface AiToolItem { id: string; name: string; desc: string; prompt: string }
 
 export interface MarketplaceContent {
   faqs: FaqItem[];
@@ -57,12 +57,55 @@ export const DEFAULT_CONTENT: MarketplaceContent = {
     { id: "a4", title: "Most Loved by Users", who: "HotelNest" },
   ],
   aiTools: [
-    { id: "t1", name: "AI Product Finder", desc: "Describe your need, get the perfect stack." },
-    { id: "t2", name: "AI Recommendation", desc: "Personalised picks from 12,000+ products." },
-    { id: "t3", name: "AI Compare", desc: "Side-by-side feature & price intelligence." },
-    { id: "t4", name: "AI Sales Assistant", desc: "24/7 chat copilot for buyers & vendors." },
+    { id: "t1", name: "AI Product Finder", desc: "Describe your need, get the perfect stack.", prompt: "Help me find the best Software Vala product for my business. Ask only the essential questions, then recommend matching categories and explain why." },
+    { id: "t2", name: "AI Recommendation", desc: "Personalised picks from 12,000+ products.", prompt: "Recommend Software Vala products for my use case from the live marketplace catalogue. Give a short ranked list, the decision criteria, and the next step." },
+    { id: "t3", name: "AI Compare", desc: "Side-by-side feature & price intelligence.", prompt: "Compare the Software Vala products or categories I mention. Use a concise feature, fit, delivery, and lifetime-price comparison, and call out the best choice for my priorities." },
+    { id: "t4", name: "AI Sales Assistant", desc: "24/7 chat copilot for buyers & vendors.", prompt: "Act as the Software Vala sales assistant. Help me understand the product, white-label, SaaS, delivery, support, and reseller options, and answer with accurate marketplace information." },
   ],
 };
+
+const AI_TOOL_PROMPTS: Record<string, string> = Object.fromEntries(
+  DEFAULT_CONTENT.aiTools.map((tool) => [tool.id, tool.prompt]),
+);
+
+export type VideoProvider = "youtube" | "vimeo" | "file" | "unknown";
+
+export function getVideoProvider(value: string): VideoProvider {
+  const url = value.trim();
+  if (!url) return "unknown";
+  if (/\.(mp4|webm|ogg)(?:\?|$)/i.test(url)) return "file";
+  try {
+    const parsed = new URL(url);
+    const hostname = parsed.hostname.toLowerCase().replace(/^www\./, "");
+    if (hostname === "youtu.be" || hostname === "youtube.com" || hostname === "m.youtube.com") {
+      const id = parsed.searchParams.get("v") ?? parsed.pathname.split("/").filter(Boolean).pop();
+      return id && /^[\w-]{6,}$/.test(id) ? "youtube" : "unknown";
+    }
+    if (hostname === "vimeo.com" || hostname === "player.vimeo.com") {
+      const id = parsed.pathname.split("/").filter(Boolean).pop();
+      return id && /^\d+$/.test(id) ? "vimeo" : "unknown";
+    }
+  } catch {
+    return "unknown";
+  }
+  return "unknown";
+}
+
+export function getVideoEmbedUrl(value: string): string | null {
+  const url = value.trim();
+  const provider = getVideoProvider(url);
+  if (provider === "file") return url;
+  if (provider === "youtube") {
+    const parsed = new URL(url);
+    const id = parsed.searchParams.get("v") ?? parsed.pathname.split("/").filter(Boolean).pop();
+    return id ? `https://www.youtube.com/embed/${id}?autoplay=1&rel=0` : null;
+  }
+  if (provider === "vimeo") {
+    const id = new URL(url).pathname.split("/").filter(Boolean).pop();
+    return id ? `https://player.vimeo.com/video/${id}?autoplay=1` : null;
+  }
+  return null;
+}
 
 const KEY = "sv.marketplace.content.v1";
 const listeners = new Set<(c: MarketplaceContent) => void>();
@@ -73,7 +116,14 @@ export const readContent = (): MarketplaceContent => {
   if (typeof window === "undefined") return DEFAULT_CONTENT;
   try {
     const raw = window.localStorage.getItem(KEY);
-    cache = raw ? { ...DEFAULT_CONTENT, ...(JSON.parse(raw) as Partial<MarketplaceContent>) } : DEFAULT_CONTENT;
+    const parsed = raw ? (JSON.parse(raw) as Partial<MarketplaceContent>) : {};
+    const aiTools = Array.isArray(parsed.aiTools)
+      ? parsed.aiTools.map((tool) => ({
+          ...tool,
+          prompt: tool.prompt || AI_TOOL_PROMPTS[tool.id] || "Help me use the Software Vala marketplace and recommend the right next step.",
+        }))
+      : DEFAULT_CONTENT.aiTools;
+    cache = { ...DEFAULT_CONTENT, ...parsed, aiTools };
   } catch {
     cache = DEFAULT_CONTENT;
   }
