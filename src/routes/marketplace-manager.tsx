@@ -7,6 +7,8 @@ import {
   writeContent,
   DEFAULT_CONTENT,
   newId,
+  getVideoEmbedUrl,
+  getVideoProvider,
   type MarketplaceContent,
 } from "@/lib/marketplace-manager/store";
 import { LIFETIME_PRICE_FULL, SOFTWARE_COUNT, CATEGORY_COUNT } from "@/lib/marketplace-content/stats";
@@ -126,7 +128,7 @@ function MarketplaceManager() {
         {tab === "Vala TV" && (
           <Section
             title="Vala TV videos"
-            hint="Paste a YouTube / Vimeo / MP4 link — it plays inline on the home page."
+            hint="Paste a public YouTube or Vimeo link — it is validated and plays inline on the home page."
             onAdd={() => patch("videos", [...draft.videos, { id: newId(), title: "", url: "", duration: "", views: "" }])}
           >
             {draft.videos.map((v, i) => (
@@ -151,6 +153,18 @@ function MarketplaceManager() {
                     patch("videos", next);
                   }}
                 />
+                {v.url && (
+                  <div className="space-y-2">
+                    <div className={`text-[11px] font-semibold ${getVideoProvider(v.url) === "unknown" ? "text-rose-300" : "text-emerald-300"}`}>
+                      {getVideoProvider(v.url) === "unknown" ? "Invalid link — use a YouTube or Vimeo URL" : `Ready to play · ${getVideoProvider(v.url)}`}
+                    </div>
+                    {getVideoProvider(v.url) !== "file" && getVideoEmbedUrl(v.url) && (
+                      <div className="aspect-video max-w-md overflow-hidden rounded-lg border border-white/10 bg-black/30">
+                        <iframe src={getVideoEmbedUrl(v.url) ?? undefined} title={`${v.title || "Vala TV"} preview`} className="h-full w-full" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowFullScreen />
+                      </div>
+                    )}
+                  </div>
+                )}
                 <div className="grid grid-cols-2 gap-3">
                   <input
                     className={inputCls}
@@ -269,11 +283,12 @@ function MarketplaceManager() {
         {tab === "AI Zone" && (
           <Section
             title="AI Zone tools"
-            onAdd={() => patch("aiTools", [...draft.aiTools, { id: newId(), name: "", desc: "" }])}
+            hint="Each tool opens a live Vala AI workflow. Configure the task prompt that powers it."
+            onAdd={() => patch("aiTools", [...draft.aiTools, { id: newId(), name: "", desc: "", prompt: "Help the customer with their Software Vala marketplace request and recommend the right next step." }])}
           >
             {draft.aiTools.map((t, i) => (
               <Row key={t.id} onRemove={() => patch("aiTools", draft.aiTools.filter((x) => x.id !== t.id))}>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                   <input
                     className={inputCls}
                     placeholder="Tool name"
@@ -295,6 +310,16 @@ function MarketplaceManager() {
                     }}
                   />
                 </div>
+                <textarea
+                  className={`${inputCls} min-h-[84px]`}
+                  placeholder="Live AI task prompt"
+                  value={t.prompt}
+                  onChange={(e) => {
+                    const next = [...draft.aiTools];
+                    next[i] = { ...t, prompt: e.target.value };
+                    patch("aiTools", next);
+                  }}
+                />
               </Row>
             ))}
           </Section>

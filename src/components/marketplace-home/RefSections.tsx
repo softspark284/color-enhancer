@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useMarketplaceContent } from "@/lib/marketplace-manager/store";
+import { getVideoEmbedUrl, getVideoProvider } from "@/lib/marketplace-manager/store";
+import { MarketplaceAiToolDialog } from "@/components/marketplace-home/MarketplaceAiToolDialog";
 import {
   Sparkles, GraduationCap, Hospital, Hotel, ShoppingBag, Wrench, Factory,
   Trophy, Award, BookOpen, Handshake, ChevronRight, Star,
@@ -59,14 +61,16 @@ const AI_STYLES = [
 
 export const AIZone = () => {
   const { aiTools } = useMarketplaceContent();
+  const [activeTool, setActiveTool] = useState<(typeof aiTools)[number] | null>(null);
   return (
-    <section className="py-10">
+    <>
+      <section className="py-10">
       {sectionTitle("AI Zone", "#All", "Automation copilots built into the marketplace")}
       <div className="grid grid-cols-1 gap-4 px-6 sm:grid-cols-2 lg:grid-cols-4">
         {aiTools.map((t, i) => {
           const st = AI_STYLES[i % AI_STYLES.length]!;
-          return (
-            <a key={t.id} href="#AI%20%26%20Automation" className={`group relative overflow-hidden rounded-2xl border ${st.ring} bg-gradient-to-br from-white/[0.04] to-white/[0.01] p-5 transition-all hover:-translate-y-1 hover:shadow-[0_24px_60px_-20px_rgba(217,70,239,0.45)]`}>
+            return (
+            <button key={t.id} type="button" onClick={() => setActiveTool(t)} className={`group relative overflow-hidden rounded-2xl border text-left ${st.ring} bg-gradient-to-br from-white/[0.04] to-white/[0.01] p-5 transition-all hover:-translate-y-1 hover:shadow-[0_24px_60px_-20px_rgba(217,70,239,0.45)]`}>
               <div className={`mb-3 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-white/5 ${st.accent}`}>
                 <st.icon className="h-5 w-5" />
               </div>
@@ -75,11 +79,13 @@ export const AIZone = () => {
               <div className="mt-4 flex items-center gap-1 text-[11px] font-semibold text-cyan-300">
                 Open tool <ArrowRight className="h-3 w-3" />
               </div>
-            </a>
+            </button>
           );
         })}
       </div>
-    </section>
+      </section>
+      <MarketplaceAiToolDialog tool={activeTool} onClose={() => setActiveTool(null)} />
+    </>
   );
 };
 
@@ -177,14 +183,6 @@ export const LiveActivity = () => {
 };
 
 // Vala TV
-const embedUrl = (url: string) => {
-  const yt = url.match(/(?:youtu\.be\/|v=|youtube\.com\/embed\/)([\w-]{6,})/);
-  if (yt) return `https://www.youtube.com/embed/${yt[1]}?autoplay=1`;
-  const vm = url.match(/vimeo\.com\/(\d+)/);
-  if (vm) return `https://player.vimeo.com/video/${vm[1]}?autoplay=1`;
-  return url;
-};
-
 export const ValaTV = () => {
   const { videos } = useMarketplaceContent();
   const [playing, setPlaying] = useState<string | null>(null);
@@ -193,8 +191,10 @@ export const ValaTV = () => {
       {sectionTitle("Vala TV", "/marketplace-manager", "Demos, walkthroughs, customer films")}
       <div className="grid grid-cols-1 gap-4 px-6 sm:grid-cols-2 lg:grid-cols-4">
         {videos.map((v) => {
-          const isPlaying = playing === v.id && !!v.url;
-          const isFile = /\.(mp4|webm|ogg)(\?|$)/i.test(v.url);
+          const provider = getVideoProvider(v.url);
+          const isPlayable = provider !== "unknown";
+          const isPlaying = playing === v.id && isPlayable;
+          const isFile = provider === "file";
           return (
             <div key={v.id} className="group relative overflow-hidden rounded-xl border border-white/[0.07] bg-gradient-to-br from-[oklch(0.2_0.06_265)] to-[oklch(0.14_0.05_265)] transition-all hover:border-fuchsia-400/40">
               <div className="relative aspect-video w-full overflow-hidden bg-gradient-to-br from-fuchsia-500/20 via-cyan-500/10 to-transparent">
@@ -203,7 +203,7 @@ export const ValaTV = () => {
                     <video src={v.url} controls autoPlay className="h-full w-full object-cover" />
                   ) : (
                     <iframe
-                      src={embedUrl(v.url)}
+                       src={getVideoEmbedUrl(v.url) ?? undefined}
                       title={v.title}
                       allow="accelerometer; autoplay; encrypted-media; picture-in-picture"
                       allowFullScreen
@@ -213,11 +213,11 @@ export const ValaTV = () => {
                 ) : (
                   <button
                     type="button"
-                    onClick={() => v.url && setPlaying(v.id)}
-                    aria-label={v.url ? `Play ${v.title}` : `${v.title} — video coming soon`}
+                     onClick={() => isPlayable && setPlaying(v.id)}
+                     aria-label={isPlayable ? `Play ${v.title}` : `${v.title} — add a valid YouTube or Vimeo link in Marketplace Manager`}
                     className="absolute inset-0 flex items-center justify-center"
                   >
-                    <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-gray-900 shadow-2xl transition-transform group-hover:scale-110">
+                     <span className={`flex h-12 w-12 items-center justify-center rounded-full shadow-2xl transition-transform ${isPlayable ? "bg-white/90 text-gray-900 group-hover:scale-110" : "bg-white/20 text-white/50"}`}>
                       <Play className="h-5 w-5 fill-current" />
                     </span>
                   </button>
@@ -229,6 +229,7 @@ export const ValaTV = () => {
               <div className="p-3">
                 <div className="text-sm font-semibold text-white line-clamp-2">{v.title}</div>
                 <div className="mt-1 text-[11px] text-white/60">{v.views ? `${v.views} views` : "Vala TV"}</div>
+                {v.url && !isPlayable && <div className="mt-2 text-[10px] font-semibold text-rose-300">Add a valid YouTube or Vimeo link</div>}
               </div>
             </div>
           );
