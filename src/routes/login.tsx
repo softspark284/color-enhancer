@@ -32,6 +32,8 @@ export const Route = createFileRoute("/login")({
       { name: "description", content: "Secure access to the Software Vala Nexus OS — the operating system of a global software ecosystem." },
       { property: "og:title", content: "Software Vala — Nexus OS Login" },
       { property: "og:description", content: "Enter the Software Vala Universe." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: NexusLogin,
