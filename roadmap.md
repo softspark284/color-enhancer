@@ -1,0 +1,2 @@
+- [ ] Create seven isolated test users, assign reseller, franchise, influencer, affiliate, author, vendor, and boss roles, and verify each dashboard login.
+- [ ] Add real sub-category products in Marketplace Manager and verify every product card opens its detail page.
